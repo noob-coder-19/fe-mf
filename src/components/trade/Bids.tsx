@@ -21,7 +21,8 @@ export function Bids({ bids }: Props) {
   return (
     <div className="flex flex-col-reverse flex-1 gap-1">
       {cumulative_bids.map((task, index) => {
-        const key = `${task[0]}-${index}-${task[1]}-${task[2]}`;
+        // const key = `bids-${task[0]}-${task[1]}-${task[2]}`;
+        const key = `bids-${index}`;
         const bar1 = (Number(task[2]) * 70) / total;
         const bar2 = (Number(task[1]) * 40) / max_size;
 

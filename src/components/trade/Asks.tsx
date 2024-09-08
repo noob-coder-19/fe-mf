@@ -20,7 +20,8 @@ export function Asks({ asks }: Props) {
   return (
     <div className="flex flex-col-reverse flex-1 gap-1">
       {cumulative_asks.map((task, index) => {
-        const key = `${task[0]}-${index}-${task[1]}-${task[2]}`;
+        // const key = `asks-${task[0]}-${task[1]}-${task[2]}`;
+        const key = `asks-${index}`;
         const bar1 = (Number(task[2]) * 70) / total;
         const bar2 = (Number(task[1]) * 40) / max_size;
 
