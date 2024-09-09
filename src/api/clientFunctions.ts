@@ -1,14 +1,24 @@
-import { Depth, KLine, Ticker, Trade } from "../utils/types";
+import { Ticker, TickerSchema } from "../utils/schemas";
+import { Depth, KLine, Trade } from "../utils/types";
 import axiosClient from "./axiosInstance";
 import ENDPOINTS from "./endpoints";
 
 export const getTicker = async (market: string): Promise<Ticker> => {
-  const tickers = await getTickers();
-  const ticker = tickers.find((t) => t.symbol === market);
-  if (!ticker) {
-    throw new Error(`No ticker found for ${market}`);
+  const response = await axiosClient({
+    method: "GET",
+    url: ENDPOINTS.TICKERS,
+    params: {
+      symbol: market,
+    },
+  });
+
+  const parsedTickerData = TickerSchema.safeParse(response.data);
+
+  if (!parsedTickerData.success) {
+    throw new Error("Invalid ticker");
   }
-  return ticker;
+
+  return parsedTickerData.data;
 };
 
 export const getTickers = async (): Promise<Ticker[]> => {
