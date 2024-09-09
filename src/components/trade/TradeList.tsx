@@ -1,5 +1,5 @@
-import { Trade } from "../../utils/types";
 import classNames from "classnames";
+import { Trade } from "../../utils/schemas";
 
 type Props = {
   market: string;
@@ -17,10 +17,10 @@ const TradeList = ({ tradeList = [] }: Props) => {
 
           return (
             <TradeItem
-              key={trade.id}
+              key={trade.trade_id}
               price={trade.price}
-              timestamp={trade.timestamp}
-              quantity={trade.quantity}
+              time={trade.time}
+              volume={trade.volume}
               prevPrice={tradeList[index + 1].price}
             ></TradeItem>
           );
@@ -30,13 +30,12 @@ const TradeList = ({ tradeList = [] }: Props) => {
   );
 };
 
-interface TradeItemProps
-  extends Pick<Trade, "price" | "timestamp" | "quantity"> {
-  prevPrice: string;
+interface TradeItemProps extends Pick<Trade, "price" | "time" | "volume"> {
+  prevPrice: number;
 }
 
 const TradeItem = (props: TradeItemProps) => {
-  const date = new Date(props.timestamp);
+  const date = props.time;
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
   const seconds = date.getSeconds().toString().padStart(2, "0");
@@ -57,9 +56,7 @@ const TradeItem = (props: TradeItemProps) => {
       >
         {formattedNumber}
       </p>
-      <p className="text-right w-[33%] text-sm tabular-nums">
-        {props.quantity}
-      </p>
+      <p className="text-right w-[33%] text-sm tabular-nums">{props.volume}</p>
       <p className="text-right w-[33%] text-sm tabular-nums text-gray-400">
         {formattedTime}
       </p>
