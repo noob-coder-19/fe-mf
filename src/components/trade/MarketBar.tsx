@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getTicker } from "../../api/clientFunctions";
-import { Ticker } from "../../utils/types";
 import classNames from "classnames";
 import { SocketManager } from "../../lib/SocketManager";
+import { Ticker } from "../../utils/schemas";
 
 type Props = {
   market: string;
@@ -51,12 +51,11 @@ const MarketBar = (props: Props) => {
         <p
           className={classNames("font-medium text-2xl flex", {
             "text-white": ticker === null,
-            "text-green-500":
-              ticker !== null && Number(ticker.priceChange) >= 0,
-            "text-red-500": ticker !== null && Number(ticker.priceChange) < 0,
+            "text-green-500": ticker !== null && Number(ticker.c) >= 0,
+            "text-red-500": ticker !== null && Number(ticker.c) < 0,
           })}
         >
-          {ticker?.lastPrice}
+          {ticker?.p}
         </p>
       </div>
     </div>
