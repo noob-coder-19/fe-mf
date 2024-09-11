@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import TradeList from "./TradeList";
 import Book from "./Book";
 import { getDepth, getTicker, getTrades } from "../../api/clientFunctions";
-import { Depth as DepthType, Ticker, Trade } from "../../utils/types";
+import { Depth as DepthType } from "../../utils/types";
 import { SocketManager } from "../../lib/SocketManager";
+import { Ticker, Trade } from "../../utils/schemas";
 
 type Props = {
   market: string;
@@ -48,8 +49,8 @@ const Depth = ({ market }: Props) => {
       const filteredTrades = trades.length > N ? trades.slice(0, N) : trades;
       setBids(depth.bids);
       setAsks(depth.asks);
-      setCurrentPrice(t.lastPrice);
-      setHasPriceIncreased(Number(t.priceChange) >= 0);
+      setCurrentPrice(t.p.toString());
+      setHasPriceIncreased(Number(t.c) >= 0);
       setTradeList(filteredTrades);
     };
 
@@ -132,7 +133,7 @@ const Depth = ({ market }: Props) => {
       SocketManager.getInstance().registerCallback(
         "ticker",
         (data: Ticker) => {
-          setCurrentPrice(data.lastPrice);
+          setCurrentPrice(data.p.toString());
         },
         `TICKER-BOOK-${market}`
       );
