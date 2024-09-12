@@ -1,4 +1,5 @@
-import { KlineResponseType, Ticker, Trade } from "../utils/types";
+import { Ticker } from "../utils/schemas";
+import { KlineResponseType, Trade } from "../utils/types";
 
 type CallbacksType = Record<
   string,
@@ -45,7 +46,8 @@ export class SocketManager {
 
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      const type = message.data.e;
+      console.log(message, event.data);
+      const type = message.e;
 
       //   console.log(message, this.callbacks);
 
@@ -61,17 +63,11 @@ export class SocketManager {
 
         this.callbacks[type].map((cb) => cb.callback(data));
       } else if (type === "ticker") {
-        const priceChange = Number(message.data.o) - Number(message.data.o);
-        const priceChangePercent =
-          (priceChange * 100.0) / Number(message.data.o);
-
         const data: Ticker = {
-          firstPrice: message.data.o,
-          lastPrice: message.data.c,
-          high: message.data.h,
-          low: message.data.l,
-          priceChange: `${priceChange}`,
-          priceChangePercent: `${priceChangePercent}`,
+          p: message.p,
+          q: message.q,
+          v: message.v,
+          c: message.c,
         };
 
         this.callbacks[type].map((cb) => cb.callback(data));
