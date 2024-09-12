@@ -17,7 +17,7 @@ const TradeList = ({ tradeList = [] }: Props) => {
 
           return (
             <TradeItem
-              key={trade.trade_id}
+              key={index}
               price={trade.price}
               time={trade.time}
               volume={trade.volume}
