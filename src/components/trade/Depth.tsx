@@ -139,9 +139,9 @@ const Depth = ({ market }: Props) => {
       );
       SocketManager.getInstance().registerCallback(
         "trade",
-        (data: Trade) => {
+        (data: Trade[]) => {
           setTradeList((old_trades) => {
-            const new_trades = structuredClone([data, ...old_trades]);
+            const new_trades = structuredClone([...data, ...old_trades]);
             new_trades.pop();
 
             return new_trades;
