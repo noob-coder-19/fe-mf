@@ -22,9 +22,9 @@ const TradingView = ({ market }: Props) => {
       const klineData: KLine[] = await getKlines(
         market,
         import.meta.env.VITE_INTERVAL,
-        Math.floor((new Date().getTime() - 1000 * 60 * 60 * 24 * 7) / 1000),
+        new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 7),
         // Math.floor((new Date().getTime() - 1000 * 60 * 60 * 4) / 1000), // Use 4 hours for testing with 1m interval
-        Math.floor(new Date().getTime() / 1000)
+        new Date()
       );
 
       if (chartManagerRef.current) {

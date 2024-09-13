@@ -82,8 +82,8 @@ export const getTrades = async (market: string): Promise<Trade[]> => {
 export const getKlines = async (
   market: string,
   interval: string,
-  startTime: number,
-  endTime: number
+  startTime: Date,
+  endTime: Date
 ): Promise<KLine[]> => {
   const response = await axiosClient({
     method: "GET",
