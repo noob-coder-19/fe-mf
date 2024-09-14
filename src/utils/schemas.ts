@@ -21,3 +21,13 @@ export const DepthSchema = z.object({
   bids: z.array(z.array(z.string()).length(2)),
 });
 export type Depth = z.infer<typeof DepthSchema>;
+
+export const KLineSchema = z.object({
+  t: z.coerce.date().default(new Date()),
+  o: z.number().default(0),
+  h: z.number().default(0),
+  l: z.number().default(0),
+  c: z.number().default(0),
+  v: z.number().default(0),
+});
+export type KLine = z.infer<typeof KLineSchema>;

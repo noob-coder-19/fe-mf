@@ -5,8 +5,9 @@ import {
   TickerSchema,
   Trade,
   TradeSchema,
+  KLineSchema,
+  KLine,
 } from "../utils/schemas";
-import { KLine } from "../utils/types";
 import axiosClient from "./axiosInstance";
 import ENDPOINTS from "./endpoints";
 
@@ -96,5 +97,20 @@ export const getKlines = async (
     },
   });
 
-  return response.data;
+  if (!Array.isArray(response.data)) {
+    throw new Error("Invalid klines");
+  }
+
+  const klines: KLine[] = [];
+  for (const kline of response.data) {
+    const parsedKline = KLineSchema.safeParse(kline);
+
+    if (!parsedKline.success) {
+      throw new Error("Invalid kline");
+    }
+
+    klines.push(parsedKline.data);
+  }
+
+  return klines;
 };
