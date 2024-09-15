@@ -1,5 +1,4 @@
 import { Ticker, Trade } from "../utils/schemas";
-import { KlineResponseType } from "../utils/types";
 
 type CallbacksType = Record<
   string,
@@ -85,16 +84,7 @@ export class SocketManager {
 
         this.callbacks[type].map((cb) => cb.callback(data));
       } else if (type === "kline") {
-        const data: KlineResponseType = {
-          open: message.data.o,
-          close: message.data.c,
-          high: message.data.h,
-          low: message.data.l,
-          timestamp: message.data.E / 1000,
-          new_candle: message.data.X,
-        };
-
-        this.callbacks[type].map((cb) => cb.callback(data));
+        this.callbacks[type].map((cb) => cb.callback(message.k));
       }
     };
   }
