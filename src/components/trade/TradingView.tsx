@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { getKlines } from "../../api/clientFunctions";
-import { KLine, KlineResponseType } from "../../utils/types";
 import { ChartManager } from "../../lib/LiveCharts";
 import { UTCTimestamp } from "lightweight-charts";
 import { SocketManager } from "../../lib/SocketManager";
+import { KLine, KLineSchema } from "../../utils/schemas";
 
 type Props = {
   market: string;
@@ -36,11 +36,11 @@ const TradingView = ({ market }: Props) => {
         klineData
           .map((kline) => {
             return {
-              close: parseFloat(kline.close),
-              high: parseFloat(kline.high),
-              low: parseFloat(kline.low),
-              open: parseFloat(kline.open),
-              time: (new Date(kline.end).getTime() / 1000) as UTCTimestamp,
+              close: kline.c,
+              high: kline.h,
+              low: kline.l,
+              open: kline.o,
+              time: (kline.t.getTime() / 1000) as UTCTimestamp,
             };
           })
           .sort((a, b) => (a.time < b.time ? -1 : 1)) || [],
@@ -56,15 +56,16 @@ const TradingView = ({ market }: Props) => {
     init().then(() => {
       SocketManager.getInstance().registerCallback(
         "kline",
-        (data: KlineResponseType) => {
-          chartManagerRef.current?.update(data);
+        (data: KLine) => {
+          const kline = KLineSchema.parse(data);
+          chartManagerRef.current?.update(kline);
         },
         `KLINE-${market}`
       );
 
       SocketManager.getInstance().sendMessage({
         method: "SUBSCRIBE",
-        params: [`kline.${import.meta.env.VITE_INTERVAL}.${market}`],
+        params: [`kline.${market}`],
       });
     });
 
