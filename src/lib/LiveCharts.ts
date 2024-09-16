@@ -6,7 +6,7 @@ import {
   ISeriesApi,
   UTCTimestamp,
 } from "lightweight-charts";
-import { KlineResponseType } from "../utils/types";
+import { KLine } from "../utils/schemas";
 
 interface CandleDataType {
   high: number;
@@ -66,21 +66,18 @@ export class ChartManager {
     this.lastUpdateTime = initialData[initialData.length - 1].time;
   }
 
-  public update(updatedPrice: KlineResponseType) {
+  public update(updatedPrice: KLine) {
+    const lastTime = updatedPrice.t.getTime() / 1000;
     this.candleSeries.update({
       time: this.lastUpdateTime as UTCTimestamp,
-      open: Number(updatedPrice.open),
-      low: Number(updatedPrice.low),
-      high: Number(updatedPrice.high),
-      close: Number(updatedPrice.close),
+      open: updatedPrice.o,
+      low: updatedPrice.l,
+      high: updatedPrice.h,
+      close: updatedPrice.c,
     });
 
-    if (updatedPrice.new_candle) {
-      this.lastUpdateTime = updatedPrice.timestamp;
-
-      console.log(
-        `last update time: ${new Date(this.lastUpdateTime)} \n\n\n\n`
-      );
+    if (lastTime > this.lastUpdateTime) {
+      this.lastUpdateTime = lastTime;
     }
   }
 
