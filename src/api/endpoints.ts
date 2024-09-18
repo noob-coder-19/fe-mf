@@ -3,10 +3,10 @@ const ENDPOINTS = {
   TICKERS: "/ticker",
   DEPTH: "/depth",
   K_LINES: "/klines",
-  LOGIN: "/login",
-  REGISTER: "/register",
-  REFRESH_TOKEN: "/refresh-token",
-  LOGOUT: "/logout",
+  LOGIN: "/auth/login",
+  REGISTER: "/auth/register",
+  REFRESH_TOKEN: "/auth/refresh-token",
+  LOGOUT: "/auth/logout",
 };
 
 export default ENDPOINTS;
