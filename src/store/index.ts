@@ -6,8 +6,8 @@ type Store = {
 };
 
 const useStore = create<Store>()((set) => ({
-  //   accessToken: null,
-  accessToken: "sf",
+  accessToken: null,
+  // accessToken: "sf",
   setAccessToken: (newAccessToken) =>
     set((state) => ({ ...state, accessToken: newAccessToken })),
 }));
