@@ -11,6 +11,31 @@ import {
 import axiosClient from "./axiosInstance";
 import ENDPOINTS from "./endpoints";
 
+export const getAccessToken = async () => {
+  const response = await axiosClient({
+    method: "GET",
+    url: ENDPOINTS.REFRESH_TOKEN,
+  });
+
+  return response.data.accessToken;
+};
+
+export const loginController = async (
+  email: string,
+  password: string
+): Promise<string> => {
+  const response = await axiosClient({
+    method: "POST",
+    url: ENDPOINTS.LOGIN,
+    data: {
+      email,
+      password,
+    },
+  });
+
+  return response.data.accessToken;
+};
+
 export const getTicker = async (market: string): Promise<Ticker> => {
   const response = await axiosClient({
     method: "GET",
