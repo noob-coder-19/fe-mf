@@ -1,15 +1,30 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { Link } from "react-router";
+import { loginController } from "../api/clientFunctions";
+import useStore from "../store";
 
 const Login = () => {
+  const { setAccessToken } = useStore();
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     const { email, password } = Object.fromEntries(
       new FormData(e.currentTarget)
     );
 
-    console.log(email, password);
+    loginController(email.toString(), password.toString())
+      .then((res) => {
+        setAccessToken(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -51,7 +66,8 @@ const Login = () => {
           </span>
 
           <button
-            className="flex-1 p-2 rounded-lg bg-white text-black"
+            disabled={loading}
+            className="flex-1 p-2 rounded-lg bg-white disabled:bg-white/50 text-black"
             type="submit"
           >
             Submit
