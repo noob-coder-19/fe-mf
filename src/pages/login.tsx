@@ -1,11 +1,12 @@
-import { FormEvent, useState } from "react";
-import { Link } from "react-router";
-import { loginController } from "../api/clientFunctions";
+import { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { getAccessToken, loginController } from "../api/clientFunctions";
 import useStore from "../store";
 
 const Login = () => {
   const { setAccessToken } = useStore();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,6 +19,9 @@ const Login = () => {
     loginController(email.toString(), password.toString())
       .then((res) => {
         setAccessToken(res);
+        navigate(`/trade/${import.meta.env.VITE_CORE_MARKET}`, {
+          replace: true,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -26,6 +30,16 @@ const Login = () => {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      setAccessToken(response);
+      navigate(`/trade/${import.meta.env.VITE_CORE_MARKET}`, {
+        replace: true,
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- check only once
+  }, []);
 
   return (
     <div className="flex flex-1 items-center justify-center">
