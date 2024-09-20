@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 type Store = {
   accessToken: string | null;
-  setAccessToken: (accessToken?: string) => void;
+  setAccessToken: (accessToken: string | null) => void;
 };
 
 const useStore = create<Store>()((set) => ({
