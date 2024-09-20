@@ -13,7 +13,7 @@ import ENDPOINTS from "./endpoints";
 
 export const getAccessToken = async () => {
   const response = await axiosClient({
-    method: "GET",
+    method: "POST",
     url: ENDPOINTS.REFRESH_TOKEN,
   });
 
