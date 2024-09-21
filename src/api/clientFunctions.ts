@@ -36,6 +36,13 @@ export const loginController = async (
   return response.data.accessToken;
 };
 
+export const logoutController = async (): Promise<void> => {
+  await axiosClient({
+    method: "POST",
+    url: ENDPOINTS.LOGOUT,
+  });
+};
+
 export const getTicker = async (market: string): Promise<Ticker> => {
   const response = await axiosClient({
     method: "GET",
