@@ -1,10 +1,23 @@
 import { Outlet, useNavigate } from "react-router";
 import useStore from "../../store";
 import { Logo } from "./Logo";
+import { logoutController } from "../../api/clientFunctions";
 
 const Navbar = () => {
-  const { accessToken } = useStore();
+  const { accessToken, setAccessToken } = useStore();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setAccessToken(null);
+
+    logoutController()
+      .then(() => {
+        console.log("Logged out");
+      })
+      .finally(() => {
+        navigate("/login", { replace: true });
+      });
+  };
 
   return (
     <>
@@ -58,6 +71,7 @@ const Navbar = () => {
               <button
                 type="button"
                 className="text-center text-orange-500 bg-orange-500/20 font-semibold rounded-lg focus:outline-none hover:opacity-90 disabled:opacity-80 disabled:hover:opacity-80 text-sm px-3 py-1.5"
+                onClick={handleLogout}
               >
                 Logout
               </button>
