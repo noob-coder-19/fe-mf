@@ -36,6 +36,22 @@ export const loginController = async (
   return response.data.accessToken;
 };
 
+export const registerController = async (
+  email: string,
+  password: string
+): Promise<string> => {
+  const response = await axiosClient({
+    method: "POST",
+    url: ENDPOINTS.REGISTER,
+    data: {
+      email,
+      password,
+    },
+  });
+
+  return response.data.accessToken;
+};
+
 export const logoutController = async (): Promise<void> => {
   await axiosClient({
     method: "POST",
