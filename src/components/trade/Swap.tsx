@@ -2,8 +2,12 @@ import { useState } from "react";
 import classNames from "classnames";
 import Balance from "./Balance";
 import InputWithLabel from "../shared/InputWithLabel";
+import useStore from "../../store";
+import { useNavigate } from "react-router";
 
 const Swap = () => {
+  const { accessToken } = useStore();
+  const navigate = useNavigate();
   const [isBuySelected, setIsBuySelected] = useState<boolean>(true);
   const [isLimitOrder, setIsLimitOrder] = useState<boolean>(true);
 
@@ -130,17 +134,32 @@ const Swap = () => {
       </div>
 
       {/* Buy/Sell Button */}
-      <button
-        className={classNames(
-          "text-center w-full text-ebony-950 focus:ring-blue-200 focus:none focus:outline-none hover:opacity-90 disabled:opacity-80 disabled:hover:opacity-80 rounded-lg font-semibold h-12",
-          {
-            "bg-green-500": isBuySelected,
-            "bg-red-500": !isBuySelected,
-          }
-        )}
-      >
-        {isBuySelected ? "Buy" : "Sell"}
-      </button>
+      {accessToken ? (
+        <>
+          <button
+            className={classNames(
+              "text-center w-full text-ebony-950 focus:ring-blue-200 focus:none focus:outline-none hover:opacity-90 disabled:opacity-80 disabled:hover:opacity-80 rounded-lg font-semibold h-12",
+              {
+                "bg-green-500": isBuySelected,
+                "bg-red-500": !isBuySelected,
+              }
+            )}
+          >
+            {isBuySelected ? "Buy" : "Sell"}
+          </button>
+        </>
+      ) : (
+        <>
+          <button
+            className={classNames(
+              "text-center w-full text-ebony-950 bg-white focus:ring-blue-200 focus:none focus:outline-none hover:opacity-90 disabled:opacity-80 disabled:hover:opacity-80 rounded-lg font-semibold h-12"
+            )}
+            onClick={() => navigate("/login", { replace: true })}
+          >
+            Login
+          </button>
+        </>
+      )}
     </div>
   );
 };
