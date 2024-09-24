@@ -3,9 +3,20 @@ import Swap from "../components/trade/Swap";
 import MarketBar from "../components/trade/MarketBar";
 import Depth from "../components/trade/Depth";
 import TradingView from "../components/trade/TradingView";
+import { useEffect } from "react";
+import { getAccessToken } from "../api/clientFunctions";
+import useStore from "../store";
 
 const Trade = () => {
   const { market } = useParams();
+  const { setAccessToken } = useStore();
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      setAccessToken(response);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- check only once
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row flex-1 h-screen px-6 gap-2">
