@@ -1,20 +1,31 @@
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { getAccessToken } from "../api/clientFunctions";
+import { getAccessToken, registerController } from "../api/clientFunctions";
 import useStore from "../store";
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
   const { setAccessToken } = useStore();
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     const { email, password } = Object.fromEntries(
       new FormData(e.currentTarget)
     );
 
-    console.log(email, password);
+    registerController(email.toString(), password.toString())
+      .then((res) => {
+        setLoading(false);
+        setAccessToken(res);
+        navigate(`/login`);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Error: Some error occurred");
+      });
   };
 
   useEffect(() => {
@@ -66,7 +77,8 @@ const Signup = () => {
           </span>
 
           <button
-            className="flex-1 p-2 rounded-lg bg-white text-black"
+            disabled={loading}
+            className="flex-1 p-2 rounded-lg bg-white disabled:bg-white/50 text-black"
             type="submit"
           >
             Submit
