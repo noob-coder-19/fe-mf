@@ -7,6 +7,7 @@ const ENDPOINTS = {
   REGISTER: "/auth/register",
   REFRESH_TOKEN: "/auth/refresh-token",
   LOGOUT: "/auth/logout",
+  GET_BALANCE: "/balance",
 };
 
 export default ENDPOINTS;
