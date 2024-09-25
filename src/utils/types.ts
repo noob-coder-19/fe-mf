@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface KLine {
   close: string;
   end: string;
@@ -42,3 +44,9 @@ export interface KlineResponseType extends Omit<KLine, "start" | "end"> {
   timestamp: number;
   new_candle: boolean;
 }
+
+export const BalanceSchema = z.object({
+  free: z.string(),
+  locked: z.string(),
+});
+export type Balance = z.infer<typeof BalanceSchema>;
