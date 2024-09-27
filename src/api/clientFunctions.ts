@@ -1,3 +1,4 @@
+import useStore from "../store";
 import {
   DepthSchema,
   Depth,
@@ -8,14 +9,18 @@ import {
   KLineSchema,
   KLine,
 } from "../utils/schemas";
+import { Balance } from "../utils/types";
 import axiosClient from "./axiosInstance";
 import ENDPOINTS from "./endpoints";
+import protectedAxiosClient from "./protectedAxiosInstance";
 
 export const getAccessToken = async () => {
   const response = await axiosClient({
     method: "POST",
     url: ENDPOINTS.REFRESH_TOKEN,
   });
+
+  useStore.getState().setUserId(response.data.userId);
 
   return response.data.accessToken;
 };
@@ -33,6 +38,7 @@ export const loginController = async (
     },
   });
 
+  useStore.getState().setUserId(response.data.userId);
   return response.data.accessToken;
 };
 
@@ -57,6 +63,8 @@ export const logoutController = async (): Promise<void> => {
     method: "POST",
     url: ENDPOINTS.LOGOUT,
   });
+
+  useStore.getState().setUserId(null);
 };
 
 export const getTicker = async (market: string): Promise<Ticker> => {
@@ -161,4 +169,21 @@ export const getKlines = async (
   }
 
   return klines;
+};
+
+export const getBalance = async (
+  userId: string
+): Promise<Record<string, Balance>> => {
+  console.log(protectedAxiosClient);
+
+  const response = await protectedAxiosClient({
+    method: "GET",
+    url: `${ENDPOINTS.GET_BALANCE}/${userId}`,
+  });
+
+  if (!response.data.balance) {
+    throw new Error("Invalid balance");
+  }
+
+  return response.data.balance;
 };
