@@ -46,7 +46,7 @@ export interface KlineResponseType extends Omit<KLine, "start" | "end"> {
 }
 
 export const BalanceSchema = z.object({
-  free: z.string(),
-  locked: z.string(),
+  free: z.number(),
+  locked: z.number(),
 });
 export type Balance = z.infer<typeof BalanceSchema>;
