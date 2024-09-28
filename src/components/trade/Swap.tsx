@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 import Balance from "./Balance";
 import InputWithLabel from "../shared/InputWithLabel";
 import useStore from "../../store";
 import { useNavigate } from "react-router";
+import { getBalance } from "../../api/clientFunctions";
+import { Balance as BalanceType } from "../../utils/types";
 
 const Swap = () => {
-  const { accessToken } = useStore();
+  const { accessToken, userId } = useStore();
   const navigate = useNavigate();
   const [isBuySelected, setIsBuySelected] = useState<boolean>(true);
   const [isLimitOrder, setIsLimitOrder] = useState<boolean>(true);
+  const [balance, setBalance] = useState<Record<string, BalanceType>>({});
+  const asset = import.meta.env.VITE_CORE_MARKET.split("_");
 
   const toggleIsBuySelected = (newIsBuySelected?: boolean) => {
     if (newIsBuySelected !== undefined) {
@@ -32,6 +36,18 @@ const Swap = () => {
       return !old;
     });
   };
+
+  const handleSetBalance = (newBalance: Record<string, BalanceType>) => {
+    setBalance(newBalance);
+  };
+
+  useEffect(() => {
+    if (userId) {
+      getBalance(userId).then((response) => {
+        handleSetBalance(response);
+      });
+    }
+  }, [userId]);
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -94,10 +110,13 @@ const Swap = () => {
         </button>
       </div>
 
-      <Balance
-        buy={isBuySelected}
-        currency={isBuySelected ? "USD" : "SOL"}
-      ></Balance>
+      {accessToken ? (
+        <Balance
+          buy={isBuySelected}
+          currency={isBuySelected ? asset[1] : asset[0]}
+          balance={balance?.[isBuySelected ? asset[1] : asset[0]].free || 0}
+        ></Balance>
+      ) : null}
 
       <div className="mb-2 flex flex-col gap-2">
         {isLimitOrder ? (
