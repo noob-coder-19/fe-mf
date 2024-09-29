@@ -114,7 +114,7 @@ const Swap = () => {
         <Balance
           buy={isBuySelected}
           currency={isBuySelected ? asset[1] : asset[0]}
-          balance={balance?.[isBuySelected ? asset[1] : asset[0]].free || 0}
+          balance={balance?.[isBuySelected ? asset[1] : asset[0]]?.free || 0}
         ></Balance>
       ) : null}
 
