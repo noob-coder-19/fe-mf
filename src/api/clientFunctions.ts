@@ -174,8 +174,6 @@ export const getKlines = async (
 export const getBalance = async (
   userId: string
 ): Promise<Record<string, Balance>> => {
-  console.log(protectedAxiosClient);
-
   const response = await protectedAxiosClient({
     method: "GET",
     url: `${ENDPOINTS.GET_BALANCE}/${userId}`,

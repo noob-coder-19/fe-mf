@@ -9,15 +9,10 @@ const protectedAxiosClient = axios.create({
 
 protectedAxiosClient.interceptors.request.use(
   async (config) => {
-    console.log(useStore.getState().accessToken);
-
     const { accessToken, setAccessToken } = useStore.getState();
 
     if (!accessToken) {
-      console.log("No access token found");
       const newAccessToken = await getAccessToken();
-
-      console.log("New access token: ", newAccessToken);
 
       if (newAccessToken) {
         setAccessToken(newAccessToken);
