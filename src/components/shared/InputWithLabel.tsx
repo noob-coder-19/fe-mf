@@ -4,6 +4,9 @@ type Props = {
   label: string;
   inputType?: string;
   placeholder?: string;
+  value?: string | number;
+  readOnly?: boolean;
+  onChange?: (value: string | number) => void;
 };
 
 const InputWithLabel = ({
@@ -22,6 +25,11 @@ const InputWithLabel = ({
         id={props.id}
         placeholder={placeholder}
         className="bg-white/10 py-2 px-4 rounded-lg text-2xl"
+        value={props.value}
+        readOnly={props.readOnly}
+        onChange={(e) => {
+          props.onChange?.(e.target.value);
+        }}
       />
     </div>
   );
