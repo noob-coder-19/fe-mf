@@ -16,6 +16,12 @@ const Swap = () => {
   const [balance, setBalance] = useState<Record<string, BalanceType>>({});
   const asset = import.meta.env.VITE_CORE_MARKET.split("_");
 
+  const [limitQuantity, setLimitQuantity] = useState<number>(0);
+  const [limitPrice, setLimitPrice] = useState<number>(0);
+
+  const limitTotal =
+    limitPrice && limitQuantity ? limitPrice * limitQuantity : 0;
+
   const toggleIsBuySelected = (newIsBuySelected?: boolean) => {
     if (newIsBuySelected !== undefined) {
       setIsBuySelected(newIsBuySelected);
@@ -142,22 +148,32 @@ const Swap = () => {
         {isLimitOrder ? (
           <>
             <InputWithLabel
+              value={limitPrice}
+              onChange={(value) => {
+                setLimitPrice(Number(value));
+              }}
               label="Price"
               id="limit-price"
               htmlFor="limit-price"
               placeholder="0"
             ></InputWithLabel>
             <InputWithLabel
+              value={limitQuantity}
+              onChange={(value) => {
+                setLimitQuantity(Number(value));
+              }}
               label="Quantity"
               id="limit-qty"
               htmlFor="limit-qty"
               placeholder="0"
             ></InputWithLabel>
             <InputWithLabel
+              readOnly
               label="Total"
               id="limit-total"
               htmlFor="limit-total"
               placeholder="0"
+              value={limitTotal}
             ></InputWithLabel>
           </>
         ) : (
