@@ -8,6 +8,7 @@ const ENDPOINTS = {
   REFRESH_TOKEN: "/auth/refresh-token",
   LOGOUT: "/auth/logout",
   GET_BALANCE: "/balance",
+  CREATE_ORDER: "/orders",
 };
 
 export default ENDPOINTS;

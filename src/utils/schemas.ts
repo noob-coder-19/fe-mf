@@ -31,3 +31,18 @@ export const KLineSchema = z.object({
   v: z.number().default(0),
 });
 export type KLine = z.infer<typeof KLineSchema>;
+
+export const CreateOrderSchema = z.object({
+  symbol: z.string(),
+  side: z.enum(["buy", "sell"]),
+  quantity: z
+    .number()
+    .gt(0)
+    .transform((value) => value.toString()),
+  price: z
+    .number()
+    .gt(0)
+    .transform((value) => value.toString()),
+  userId: z.string(),
+});
+export type CreateOrder = z.infer<typeof CreateOrderSchema>;
