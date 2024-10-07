@@ -4,8 +4,9 @@ import Balance from "./Balance";
 import InputWithLabel from "../shared/InputWithLabel";
 import useStore from "../../store";
 import { useNavigate } from "react-router";
-import { getBalance } from "../../api/clientFunctions";
+import { createOrder, getBalance } from "../../api/clientFunctions";
 import { Balance as BalanceType } from "../../utils/types";
+import { CreateOrderSchema } from "../../utils/schemas";
 
 const Swap = () => {
   const { accessToken, userId } = useStore();
@@ -46,6 +47,24 @@ const Swap = () => {
 
   const handleSetBalance = (newBalance: Record<string, BalanceType>) => {
     setBalance(newBalance);
+  };
+
+  const handleCreateOrder = () => {
+    if (!userId) {
+      return;
+    }
+
+    const data = CreateOrderSchema.parse({
+      price: limitPrice,
+      quantity: limitQuantity,
+      side: isBuySelected ? "buy" : "sell",
+      symbol: import.meta.env.VITE_CORE_MARKET,
+      userId: userId,
+    });
+
+    createOrder(data).then((response) => {
+      console.log(response);
+    });
   };
 
   useEffect(() => {
@@ -199,6 +218,9 @@ const Swap = () => {
                 "bg-red-500": !isBuySelected,
               }
             )}
+            onClick={() => {
+              handleCreateOrder();
+            }}
           >
             {isBuySelected ? "Buy" : "Sell"}
           </button>
