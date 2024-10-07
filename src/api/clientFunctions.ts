@@ -8,6 +8,7 @@ import {
   TradeSchema,
   KLineSchema,
   KLine,
+  CreateOrder,
 } from "../utils/schemas";
 import { Balance } from "../utils/types";
 import axiosClient from "./axiosInstance";
@@ -184,4 +185,14 @@ export const getBalance = async (
   }
 
   return response.data.balance;
+};
+
+export const createOrder = async (data: CreateOrder) => {
+  const response = await protectedAxiosClient({
+    method: "POST",
+    url: `${ENDPOINTS.CREATE_ORDER}`,
+    data,
+  });
+
+  return response.data;
 };
