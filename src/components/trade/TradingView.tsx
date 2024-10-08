@@ -19,12 +19,15 @@ const TradingView = ({ market }: Props) => {
         return;
       }
 
+      // const now = Date.now() + 19800000; // 5 hours 30 minutes in ms
+      const now = Date.now();
+
       const klineData: KLine[] = await getKlines(
         market,
         import.meta.env.VITE_INTERVAL,
-        new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 7),
+        new Date(now - 1000 * 60 * 60 * 24 * 7),
         // Math.floor((new Date().getTime() - 1000 * 60 * 60 * 4) / 1000), // Use 4 hours for testing with 1m interval
-        new Date()
+        new Date(now)
       );
 
       if (chartManagerRef.current) {
