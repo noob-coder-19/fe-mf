@@ -152,7 +152,7 @@ const Depth = ({ market }: Props) => {
 
       SocketManager.getInstance().sendMessage({
         method: "SUBSCRIBE",
-        params: [`depth.200ms.${market}`],
+        params: [`depth.${market}`],
       });
       SocketManager.getInstance().sendMessage({
         method: "SUBSCRIBE",
@@ -167,7 +167,7 @@ const Depth = ({ market }: Props) => {
     return () => {
       SocketManager.getInstance().sendMessage({
         method: "UNSUBSCRIBE",
-        params: [`depth.200ms.${market}`],
+        params: [`depth.${market}`],
       });
       SocketManager.getInstance().deRegisterCallback(
         "depth",

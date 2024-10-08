@@ -56,8 +56,8 @@ export class SocketManager {
 
       if (type === "depth") {
         const data = {
-          asks: message.data.a,
-          bids: message.data.b,
+          asks: message.payload.a,
+          bids: message.payload.b,
         };
 
         this.callbacks[type].map((cb) => cb.callback(data));
