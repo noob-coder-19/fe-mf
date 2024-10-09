@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
-const Home = () => {
+export default function CatchAll() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -9,7 +9,5 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- check only once
   }, []);
 
-  return <div>Home page</div>;
-};
-
-export default Home;
+  return <div>404 Not Found</div>;
+}
