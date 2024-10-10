@@ -50,6 +50,13 @@ const Navbar = () => {
               <button
                 type="button"
                 className="text-center text-green-500 bg-green-500/20 font-semibold rounded-lg focus:outline-none hover:opacity-90 disabled:opacity-80 disabled:hover:opacity-80 text-sm px-3 py-1.5"
+                onClick={() => {
+                  alert(
+                    `Addition and withdrawal have been disabled to prevent liquidity issues. \nPlease email us at ${
+                      import.meta.env.VITE_SUPPORT_EMAIL
+                    } and you'll be given demo credentials within 6 hours.`
+                  );
+                }}
               >
                 Deposit
               </button>
@@ -57,6 +64,11 @@ const Navbar = () => {
               <button
                 type="button"
                 className="text-center text-blue-500 bg-blue-500/20 font-semibold rounded-lg focus:outline-none hover:opacity-90 disabled:opacity-80 disabled:hover:opacity-80 text-sm px-3 py-1.5"
+                onClick={() => {
+                  alert(
+                    "Addition and withdrawal have been disabled to prevent liquidity issues."
+                  );
+                }}
               >
                 Withdraw
               </button>
