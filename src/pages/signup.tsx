@@ -1,7 +1,12 @@
-import { FormEvent } from "react";
-import { Link } from "react-router";
+import { FormEvent, useEffect } from "react";
+import { Link, useNavigate } from "react-router";
+import { getAccessToken } from "../api/clientFunctions";
+import useStore from "../store";
 
 const Signup = () => {
+  const { setAccessToken } = useStore();
+  const navigate = useNavigate();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -11,6 +16,16 @@ const Signup = () => {
 
     console.log(email, password);
   };
+
+  useEffect(() => {
+    getAccessToken().then((response) => {
+      setAccessToken(response);
+      navigate(`/trade/${import.meta.env.VITE_CORE_MARKET}`, {
+        replace: true,
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- check only once
+  }, []);
 
   return (
     <div className="flex flex-1 items-center justify-center">
