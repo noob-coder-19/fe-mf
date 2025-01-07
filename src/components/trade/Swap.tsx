@@ -10,6 +10,7 @@ import { Balance as BalanceType } from "../../utils/types";
 const Swap = () => {
   const { accessToken, userId } = useStore();
   const navigate = useNavigate();
+  const [balanceLoading, setBalanceLoading] = useState(true);
   const [isBuySelected, setIsBuySelected] = useState<boolean>(true);
   const [isLimitOrder, setIsLimitOrder] = useState<boolean>(true);
   const [balance, setBalance] = useState<Record<string, BalanceType>>({});
@@ -43,9 +44,15 @@ const Swap = () => {
 
   useEffect(() => {
     if (userId) {
-      getBalance(userId).then((response) => {
-        handleSetBalance(response);
-      });
+      getBalance(userId)
+        .then((response) => {
+          handleSetBalance(response);
+        })
+        .finally(() => {
+          setBalanceLoading(false);
+        });
+    } else {
+      setBalanceLoading(false);
     }
   }, [userId]);
 
@@ -113,6 +120,19 @@ const Swap = () => {
       {accessToken ? (
         <Balance
           buy={isBuySelected}
+          loading={balanceLoading}
+          refreshBalance={() => {
+            if (userId) {
+              setBalanceLoading(true);
+              getBalance(userId)
+                .then((response) => {
+                  handleSetBalance(response);
+                })
+                .finally(() => {
+                  setBalanceLoading(false);
+                });
+            }
+          }}
           currency={isBuySelected ? asset[1] : asset[0]}
           balance={balance?.[isBuySelected ? asset[1] : asset[0]]?.free || 0}
         ></Balance>
